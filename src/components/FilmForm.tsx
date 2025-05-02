@@ -1,4 +1,4 @@
-// FilmForm.tsx
+
 import { useState, useEffect } from "react";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "../utils/AxiosInstance";
@@ -41,7 +41,6 @@ const FilmForm = ({
   });
 
   useEffect(() => {
-    // If editing an existing film, populate the form
     if (isEditMode && film) {
       setFormData({
         title: film.title,

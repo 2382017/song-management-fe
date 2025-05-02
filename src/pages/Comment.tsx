@@ -14,7 +14,6 @@ import {
   ClockCircleOutlined
 } from "@ant-design/icons";
 
-// Types
 type CommentType = {
   id: number;
   comment: string;
@@ -42,7 +41,6 @@ type CreateCommentDTO = {
   comment: string;
 };
 
-// API Functions
 const fetchComments = async (token: string | null) => {
   return await axios.get<CommentType[]>("/api/comment", {
     headers: { Authorization: `Bearer ${token}` }
@@ -83,7 +81,7 @@ const deleteComment = async (id: number, token: string | null) => {
   });
 };
 
-// Components
+
 const CommentCard = ({
   comment,
   onEdit,
@@ -287,8 +285,7 @@ const EmptyState = ({ onAdd }: { onAdd: () => void }) => {
     </div>
   );
 };
-
-// Main Component
+ 
 const Comment = () => {
   const { getToken } = useAuth();
   const queryClient = useQueryClient();

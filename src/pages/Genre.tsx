@@ -1,4 +1,4 @@
-// Genre.tsx - Main component for managing genre
+
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useAuth } from "../utils/AuthProvider";
@@ -39,10 +39,10 @@ const Genre = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
-  // Updated queryKey, queryFn, and data variable name
+
   const { data: genreData, refetch: refetchGenre } = useQuery({
-    queryKey: ["genreList", currentPage], // Changed query key
-    queryFn: () => fetchGenreList(getToken(), currentPage) // Changed function call
+    queryKey: ["genreList", currentPage], 
+    queryFn: () => fetchGenreList(getToken(), currentPage) 
   });
 
   const handleAddNewClick = () => {
@@ -71,13 +71,13 @@ const Genre = () => {
   };
 
   const handleFormSubmit = () => {
-    refetchGenre(); // Use renamed refetch function
+    refetchGenre();
     setIsFormOpen(false);
   };
 
   const handleDeleteSuccess = () => {
-    refetchGenre(); // Use renamed refetch function
-    setSelectedGenre(null); // Use renamed state setter
+    refetchGenre(); 
+    setSelectedGenre(null); 
   };
 
   const handlePageChange = (page: number) => {
@@ -85,9 +85,8 @@ const Genre = () => {
   };
 
   return (
-    // Redesigned layout with sidebar-like structure
+    
     <div className="flex h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
-      {/* Left sidebar */}
       <div className="w-64 bg-white dark:bg-gray-800 shadow-lg">
         <div className="p-5 border-b border-gray-200 dark:border-gray-700">
           <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
@@ -115,9 +114,8 @@ const Genre = () => {
         </div>
       </div>
 
-      {/* Main content */}
+    
       <div className="flex-1 overflow-auto p-8">
-        {/* Genre List Section */}
         {genreData && (
           <GenreList
             genres={genreData.data}
@@ -128,7 +126,7 @@ const Genre = () => {
           />
         )}
 
-        {/* Genre Form Modal */}
+        
         {isFormOpen && (
           <GenreForm
             isOpen={isFormOpen}
@@ -139,7 +137,7 @@ const Genre = () => {
           />
         )}
 
-        {/* Genre Detail Modal */}
+       
         {selectedGenre && !isFormOpen && (
           <GenreDetail
             genre={selectedGenre}

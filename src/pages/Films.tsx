@@ -1,4 +1,3 @@
-// Films.tsx - Main component
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useAuth } from "../utils/AuthProvider";
@@ -111,7 +110,7 @@ const Films = () => {
           </div>
         </div>
 
-        {/* Film List Section */}
+    
         <div className="mb-10">
           {filmData && (
             <FilmList
@@ -124,7 +123,7 @@ const Films = () => {
           )}
         </div>
 
-        {/* Film Form Modal */}
+
         {isFormOpen && (
           <FilmForm
             isOpen={isFormOpen}
@@ -136,7 +135,6 @@ const Films = () => {
           />
         )}
 
-        {/* Film Detail Modal */}
         {selectedFilm && !isFormOpen && (
           <FilmDetail
             film={selectedFilm}

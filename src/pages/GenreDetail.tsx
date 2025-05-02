@@ -50,7 +50,6 @@ const GenreDetail = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden w-full max-w-md animate-fadeIn">
-        {/* Header with gradient background */}
         <div className="bg-gradient-to-r from-purple-600 to-blue-500 p-6 text-white">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">
@@ -111,7 +110,7 @@ const GenreDetail = ({
           </div>
         </div>
 
-        {/* Delete Confirmation Dialog */}
+
         {showDeleteConfirm && (
           <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
             <h3 className="text-lg font-medium text-red-600 dark:text-red-400 mb-2">

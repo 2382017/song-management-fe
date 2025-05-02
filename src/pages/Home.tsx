@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Hero Section */}
       <div className="bg-gradient-to-r from-blue-900 to-purple-900 text-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-center">
@@ -35,13 +34,13 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Features Section */}
+      
       <div className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Fitur Utama</h2>
           
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Film Feature */}
+            
             <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-all duration-300">
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto">
                 <PlaySquareOutlined className="text-3xl text-blue-600" />
@@ -61,7 +60,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Genre Feature */}
+            
             <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-all duration-300">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
                 <TagsOutlined className="text-3xl text-green-600" />
@@ -81,7 +80,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Comment Feature */}
+           
             <div className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-all duration-300">
               <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6 mx-auto">
                 <CommentOutlined className="text-3xl text-purple-600" />
@@ -104,7 +103,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Stats Section */}
+     
       <div className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Platform Pengelolaan Film</h2>
@@ -128,7 +127,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* CTA Section */}
       <div className="bg-gray-800 text-white py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">Mulai Kelola Koleksi Film Anda</h2>
