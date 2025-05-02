@@ -44,8 +44,14 @@ export const Login = () => {
   });
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-md">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 px-4">
+      {/* Title added at the top */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold text-blue-700 mb-1">MANAJEMEN FILM</h1>
+        <div className="w-32 h-1 bg-blue-600 mx-auto rounded-full"></div>
+      </div>
+      
+      <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-lg relative">
         {isPending && (
           <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-20 rounded-2xl">
             <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -106,7 +112,7 @@ export const Login = () => {
           <div>
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200"
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 font-medium shadow-md"
             >
               Sign In
             </button>
@@ -119,11 +125,16 @@ export const Login = () => {
             onClick={() => {
               navigate("/register");
             }}
-            className="text-blue-600 hover:underline"
+            className="text-blue-600 hover:underline cursor-pointer font-medium"
           >
             Sign up
           </a>
         </p>
+      </div>
+      
+      {/* Footer with creator name */}
+      <div className="mt-8 text-center text-gray-600">
+        <p className="text-sm font-medium">Dibuat oleh Benaya Rizky Sipayung</p>
       </div>
     </div>
   );
