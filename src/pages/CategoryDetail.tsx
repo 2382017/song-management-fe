@@ -1,23 +1,22 @@
-// CategoryDetail.tsx // Diubah
 import { useState } from "react";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "../utils/AxiosInstance";
-import { CategoryType } from "./Category"; // Diubah
-import { CloseOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { CategoryType } from "./Category";
+import { CloseCircleOutlined, EditOutlined, DeleteOutlined, ClockCircleOutlined, CalendarOutlined } from "@ant-design/icons";
 
-interface CategoryDetailProps { // Diubah
-  category: CategoryType; // Diubah
+interface CategoryDetailProps {
+  category: CategoryType;
   onClose: () => void;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const CategoryDetail = ({ // Diubah
-  category, // Diubah
+const CategoryDetail = ({
+  category,
   onClose,
   onEdit,
   onDelete
-}: CategoryDetailProps) => { // Diubah
+}: CategoryDetailProps) => {
   const { getToken } = useAuth();
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -28,12 +27,12 @@ const CategoryDetail = ({ // Diubah
     setError("");
 
     try {
-      await axios.delete(`/api/category/${category.id}`, { // Diubah
+      await axios.delete(`/api/category/${category.id}`, {
         headers: { Authorization: `Bearer ${getToken()}` }
       });
       onDelete();
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to delete category"); // Diubah
+      setError(err.response?.data?.message || "Failed to delete category");
       setIsDeleting(false);
       setShowDeleteConfirm(false);
     }
@@ -48,48 +47,73 @@ const CategoryDetail = ({ // Diubah
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden w-full max-w-md animate-fadeIn">
-        <div className="bg-gradient-to-r from-purple-600 to-blue-500 p-6 text-white">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">
-              Category Details {/* Diubah */}
-            </h2>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-lg flex items-center justify-center z-50 p-4">
+      <div className="bg-gradient-to-b from-slate-900 to-indigo-950 rounded-3xl overflow-hidden w-full max-w-lg animate-slideUp border border-indigo-500/30 shadow-2xl shadow-indigo-500/20">
+        {/* Header with background image pattern */}
+        <div className="relative bg-gradient-to-r from-indigo-600 to-purple-800 h-40 overflow-hidden">
+          {/* Abstract pattern background */}
+          <div className="absolute inset-0 opacity-20">
+            {Array(20).fill(0).map((_, i) => (
+              <div 
+                key={i}
+                className="absolute rounded-full bg-white/30"
+                style={{
+                  width: `${20 + Math.random() * 50}px`,
+                  height: `${20 + Math.random() * 50}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  opacity: 0.1 + (Math.random() * 0.3)
+                }}
+              />
+            ))}
+          </div>
+
+          <div className="absolute top-0 right-0 m-4">
             <button
               onClick={onClose}
-              className="text-white bg-white/20 rounded-full p-2 hover:bg-white/30 transition-colors"
+              className="bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors"
             >
-              <CloseOutlined />
+              <CloseCircleOutlined style={{ fontSize: '18px' }} />
             </button>
           </div>
-          <h3 className="text-2xl font-bold mt-4 mb-1">{category.name}</h3> {/* Diubah */}
+
+          <div className="absolute bottom-0 left-0 p-6 text-white">
+            <h2 className="text-lg font-medium opacity-80">Category Details</h2>
+            <h1 className="text-3xl font-bold mt-1 drop-shadow">{category.name}</h1>
+          </div>
         </div>
 
         {error && (
-          <div className="m-4 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg">
+          <div className="mx-6 mt-6 bg-red-900/30 border border-red-500/30 text-red-300 px-4 py-3 rounded-xl text-sm">
             {error}
           </div>
         )}
 
-        <div className="p-6">
+        <div className="p-6 text-slate-200">
           <div className="mb-6">
-            <h4 className="text-sm uppercase text-gray-500 dark:text-gray-400 font-medium mb-2">Deskripsi</h4> {/* Diubah */}
-            <div className="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{category.deskripsi}</p> {/* Diubah */}
+            <h4 className="text-xs uppercase tracking-wide text-indigo-400 font-semibold mb-3">
+              Deskripsi
+            </h4>
+            <div className="bg-slate-800/50 backdrop-blur rounded-xl p-4 border border-indigo-500/20 shadow-inner">
+              <p className="text-slate-300 whitespace-pre-line">{category.deskripsi}</p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div>
-              <h4 className="text-sm uppercase text-gray-500 dark:text-gray-400 font-medium mb-2">Created</h4>
-              <div className="bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
-                <p className="text-gray-700 dark:text-gray-300">{formatDate(category.created_at)}</p> {/* Diubah */}
+              <h4 className="text-xs uppercase tracking-wide text-indigo-400 font-semibold mb-2 flex items-center">
+                <CalendarOutlined className="mr-1" /> Created
+              </h4>
+              <div className="bg-slate-800/50 backdrop-blur rounded-xl p-3 border border-indigo-500/20 shadow-inner">
+                <p className="text-slate-300">{formatDate(category.created_at)}</p>
               </div>
             </div>
             <div>
-              <h4 className="text-sm uppercase text-gray-500 dark:text-gray-400 font-medium mb-2">Last Updated</h4>
-              <div className="bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
-                <p className="text-gray-700 dark:text-gray-300">{formatDate(category.updated_at)}</p> {/* Diubah */}
+              <h4 className="text-xs uppercase tracking-wide text-indigo-400 font-semibold mb-2 flex items-center">
+                <ClockCircleOutlined className="mr-1" /> Updated
+              </h4>
+              <div className="bg-slate-800/50 backdrop-blur rounded-xl p-3 border border-indigo-500/20 shadow-inner">
+                <p className="text-slate-300">{formatDate(category.updated_at)}</p>
               </div>
             </div>
           </div>
@@ -97,13 +121,13 @@ const CategoryDetail = ({ // Diubah
           <div className="flex space-x-3 mt-8">
             <button
               onClick={onEdit}
-              className="flex-1 py-3 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+              className="flex-1 py-3 bg-indigo-800/50 hover:bg-indigo-700/50 text-white rounded-xl flex items-center justify-center gap-2 transition-colors border border-indigo-500/30"
             >
               <EditOutlined /> Edit
             </button>
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="flex-1 py-3 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg flex items-center justify-center gap-2 hover:bg-red-100 dark:hover:bg-red-800/50 transition-colors"
+              className="flex-1 py-3 bg-red-900/30 hover:bg-red-800/50 text-red-300 rounded-xl flex items-center justify-center gap-2 transition-colors border border-red-500/30"
             >
               <DeleteOutlined /> Delete
             </button>
@@ -111,24 +135,24 @@ const CategoryDetail = ({ // Diubah
         </div>
 
         {showDeleteConfirm && (
-          <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
-            <h3 className="text-lg font-medium text-red-600 dark:text-red-400 mb-2">
+          <div className="p-6 border-t border-indigo-500/20 bg-slate-900/80 backdrop-blur">
+            <h3 className="text-lg font-semibold text-red-400 mb-2">
               Confirm Deletion
             </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Are you sure you want to delete <span className="font-semibold">"{category.name}"</span>? This action cannot be undone. {/* Diubah */}
+            <p className="text-slate-300 mb-4">
+              Are you sure you want to delete <span className="font-semibold text-white">"{category.name}"</span>? This action cannot be undone.
             </p>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg"
+                className="px-5 py-2 bg-slate-800 border border-slate-600 text-slate-300 rounded-xl hover:bg-slate-700"
                 disabled={isDeleting}
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg disabled:opacity-50 hover:bg-red-700"
+                className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl disabled:opacity-50 border border-red-500"
                 disabled={isDeleting}
               >
                 {isDeleting ? "Deleting..." : "Delete"}
@@ -141,4 +165,4 @@ const CategoryDetail = ({ // Diubah
   );
 };
 
-export default CategoryDetail; // Diubah
+export default CategoryDetail;

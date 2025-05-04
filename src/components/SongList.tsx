@@ -1,135 +1,157 @@
-// SongList.tsx // Diubah
-import { SongType } from "../pages/Songs"; // Diubah
-import { EyeOutlined, EditOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+// SongList.tsx
+import { SongType } from "../pages/Songs"; // Adjust path if needed
+import {
+  EyeOutlined,
+  EditOutlined,
+  LeftOutlined,
+  RightOutlined,
+  PlayCircleOutlined,
+  // MusicNote removed as it is not exported and unused
+} from "@ant-design/icons"; // Or other icon library
 
-interface SongListProps { // Diubah
-  songs: SongType[]; // Diubah
-  onEdit: (song: SongType) => void; // Diubah
-  onView: (song: SongType) => void; // Diubah
+interface SongListProps {
+  songs: SongType[];
+  onEdit: (song: SongType) => void;
+  onView: (song: SongType) => void;
   onPageChange: (page: number) => void;
   currentPage: number;
+  viewMode: 'grid' | 'list'; // Added viewMode prop
 }
 
-// Diubah parameter props
-const SongList = ({ songs, onEdit, onView, onPageChange, currentPage }: SongListProps) => { // Diubah
+const SongList = ({ songs, onEdit, onView, onPageChange, currentPage, viewMode }: SongListProps) => {
   return (
-    <div>
-      {songs.length === 0 ? ( // Diubah
-        <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-dashed border-gray-300 dark:border-gray-700">
-          <div className="text-gray-400 dark:text-gray-500 text-7xl mb-3">🎵</div> {/* Icon bisa disesuaikan */}
-          <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">Your collection is empty</p>
-          <p className="text-gray-400 dark:text-gray-500 text-sm">Add a song to start your collection</p> {/* Diubah */}
+    <div className="transition-all duration-500">
+      {songs.length === 0 ? (
+        <div className="flex flex-col items-center justify-center p-16 bg-purple-900/30 rounded-2xl border border-purple-800/50 text-center shadow-xl">
+           {/* Use a relevant icon */}
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-purple-400/50 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+          </svg>
+          <p className="text-xl font-semibold text-purple-200 mb-2">No tracks found</p>
+          <p className="text-purple-300/80">Try adding a new song or adjusting the filters.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {/* Diubah loop dan props */}
-          {songs.map((song) => ( // Diubah
-            <SongCard // Diubah
-              key={song.id} // Diubah
-              song={song} // Diubah
-              onEdit={() => onEdit(song)} // Diubah
-              onView={() => onView(song)} // Diubah
-            />
-          ))}
+        // Conditional rendering based on viewMode
+        <div className={viewMode === 'grid'
+            ? "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6" // Adjust grid columns as needed
+            : "space-y-4" // Classes for list view
+        }>
+          {songs.map((song) =>
+            viewMode === 'grid' ? (
+              <SongCardGrid key={song.id} song={song} onEdit={onEdit} onView={onView} />
+            ) : (
+              <SongCardList key={song.id} song={song} onEdit={onEdit} onView={onView} />
+            )
+          )}
         </div>
       )}
 
-      {/* Pagination */}
-      {songs.length > 0 && ( // Diubah
-        <div className="flex justify-center mt-10">
-          <div className="inline-flex bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow">
+      {/* Pagination - Styled for the new theme */}
+      {songs.length > 0 && (
+        <div className="flex justify-center mt-12">
+          <nav className="inline-flex rounded-lg shadow-md overflow-hidden bg-purple-800/60 border border-purple-700/50">
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage <= 1}
-              className="px-4 py-3 text-gray-600 dark:text-gray-300 border-r border-gray-200 dark:border-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-1"
+              className="px-4 py-2 text-sm font-medium text-purple-300 hover:bg-purple-700/50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-1 border-r border-purple-700/50"
             >
               <LeftOutlined /> Prev
             </button>
-            <div className="px-5 py-3 flex items-center justify-center font-medium bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+            <div className="px-5 py-2 flex items-center justify-center text-sm font-semibold bg-purple-900/50 text-pink-400">
               {currentPage}
             </div>
             <button
               onClick={() => onPageChange(currentPage + 1)}
-              // Tambahkan logika disable jika ini halaman terakhir jika perlu
-              className="px-4 py-3 text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-1"
+               // Add disable logic for last page if total count is available
+              className="px-4 py-2 text-sm font-medium text-purple-300 hover:bg-purple-700/50 transition-colors flex items-center gap-1 border-l border-purple-700/50"
             >
               Next <RightOutlined />
             </button>
-          </div>
+          </nav>
         </div>
       )}
     </div>
   );
 };
 
-interface SongCardProps { // Diubah
-  song: SongType; // Diubah
-  onEdit: () => void;
-  onView: () => void;
-}
 
-// Diubah Nama Komponen & parameter props
-const SongCard = ({ song, onEdit, onView }: SongCardProps) => { // Diubah
+// New Grid Card Component
+const SongCardGrid = ({ song, onEdit, onView }: { song: SongType, onEdit: (song: SongType) => void, onView: (song: SongType) => void }) => {
   return (
-    <div className="group bg-white dark:bg-slate-100 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full">
-      <div className="relative h-48 overflow-hidden">
-        {song.image_url ? ( // Diubah
+    <div className="group relative bg-gradient-to-br from-gray-800/70 to-gray-900/80 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-purple-600/20 transition-all duration-300 border border-gray-700/50 backdrop-blur-sm">
+      <div className="relative aspect-square overflow-hidden">
+        {/* Image */}
+        {song.image_url ? (
           <img
-            src={song.image_url} // Diubah
-            alt={song.title} // Diubah
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300x200?text=Image+Not+Found';
-            }}
+            src={song.image_url}
+            alt={song.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+            onError={(e) => { (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300x300?text=Track'; }}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-            <span className="text-gray-500 dark:text-gray-400">No Image</span>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-purple-800 to-indigo-900">
+            <PlayCircleOutlined className="text-5xl text-white/30" />
           </div>
         )}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-        <div className="absolute bottom-0 left-0 w-full p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex gap-2">
-          <button
-            onClick={onView}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-1.5 rounded-lg flex items-center justify-center gap-1 text-sm"
-          >
-            <EyeOutlined /> View
-          </button>
-          <button
-            onClick={onEdit}
-            className="flex-1 bg-gray-800/80 hover:bg-gray-900 text-white py-1.5 rounded-lg flex items-center justify-center gap-1 text-sm"
-          >
-            <EditOutlined /> Edit
-          </button>
-        </div>
+         {/* Dark overlay on hover */}
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        {/* Play button overlay on hover */}
+        <button onClick={() => onView(song)} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <PlayCircleOutlined className="text-5xl text-white/80 hover:text-white transform transition hover:scale-110" />
+        </button>
       </div>
-      <div className="p-4 flex-1 flex flex-col">
-        <div className="mb-1">
-          <span className="inline-block px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300">
-            {song.category?.name || "Uncategorized"} {/* Diubah */}
-          </span>
-        </div>
-        <h3 className="font-bold text-gray-800 dark:text-white text-lg mb-1 line-clamp-1">{song.title}</h3> {/* Diubah */}
-        <p className="text-gray-600 dark:text-gray-400 text-sm flex-1">Artist: {song.artist}</p> {/* Diubah */}
-
-        <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
-          <button
-            onClick={onView}
-            className="text-blue-500 hover:text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center gap-1"
-          >
-            <EyeOutlined /> Details
-          </button>
-          <button
-            onClick={onEdit}
-            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 text-sm flex items-center gap-1"
-          >
-            <EditOutlined /> Edit
-          </button>
-        </div>
+       {/* Content Area */}
+      <div className="p-4">
+        <h3 className="font-semibold text-white truncate text-lg mb-0.5 group-hover:text-pink-400 transition-colors">{song.title}</h3>
+        <p className="text-sm text-gray-400 truncate mb-2">{song.artist}</p>
+        <span className="inline-block bg-purple-800/70 text-purple-200 text-xs font-medium px-2 py-0.5 rounded">
+          {song.category?.name || "Unknown"}
+        </span>
+      </div>
+      {/* Hidden Edit/View buttons revealed on demand or always visible if preferred */}
+      <div className="absolute top-2 right-2 flex flex-col gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+         <button onClick={() => onView(song)} className="bg-black/50 hover:bg-purple-600 text-white p-1.5 rounded-full backdrop-blur-sm"><EyeOutlined /></button>
+         <button onClick={() => onEdit(song)} className="bg-black/50 hover:bg-pink-600 text-white p-1.5 rounded-full backdrop-blur-sm"><EditOutlined /></button>
       </div>
     </div>
   );
 };
 
-export default SongList; // Diubah
+
+// New List Card Component
+const SongCardList = ({ song, onEdit, onView }: { song: SongType, onEdit: (song: SongType) => void, onView: (song: SongType) => void }) => {
+  return (
+    <div className="group flex items-center gap-4 bg-gradient-to-r from-gray-800/60 to-gray-900/70 p-3 rounded-lg shadow-md hover:bg-gray-800/80 transition-all duration-200 border border-gray-700/50 backdrop-blur-sm">
+       {/* Image Thumbnail */}
+        {song.image_url ? (
+          <img
+            src={song.image_url}
+            alt={song.title}
+            className="w-14 h-14 object-cover rounded flex-shrink-0"
+            onError={(e) => { (e.target as HTMLImageElement).src = 'https://via.placeholder.com/60x60?text=...'; }}
+          />
+        ) : (
+          <div className="w-14 h-14 flex items-center justify-center bg-purple-800 rounded flex-shrink-0">
+             <PlayCircleOutlined className="text-2xl text-white/40" />
+          </div>
+        )}
+        {/* Title & Artist */}
+        <div className="flex-grow overflow-hidden">
+             <h3 className="font-semibold text-white truncate group-hover:text-pink-400 transition-colors">{song.title}</h3>
+             <p className="text-sm text-gray-400 truncate">{song.artist}</p>
+        </div>
+         {/* Category */}
+        <span className="hidden md:inline-block bg-purple-800/70 text-purple-200 text-xs font-medium px-2 py-0.5 rounded whitespace-nowrap flex-shrink-0">
+          {song.category?.name || "Unknown"}
+        </span>
+         {/* Actions */}
+        <div className="flex gap-2 flex-shrink-0">
+             <button onClick={() => onView(song)} className="text-purple-300 hover:text-pink-400 p-1 transition-colors"><EyeOutlined /></button>
+             <button onClick={() => onEdit(song)} className="text-purple-300 hover:text-pink-400 p-1 transition-colors"><EditOutlined /></button>
+        </div>
+    </div>
+  );
+};
+
+
+export default SongList;

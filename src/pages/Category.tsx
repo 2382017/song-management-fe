@@ -2,61 +2,61 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "../utils/AxiosInstance";
-import CategoryList from "../components/CategoryList"; // Diubah
-import CategoryForm from "../components/CategoryForm"; // Diubah
-import CategoryDetail from "./CategoryDetail"; // Diubah
-import { PlusOutlined } from "@ant-design/icons";
+import CategoryList from "../components/CategoryList";
+import CategoryForm from "../components/CategoryForm";
+import CategoryDetail from "./CategoryDetail";
+import { PlusCircleOutlined } from "@ant-design/icons";
 
-export type CategoryType = { // Diubah
+export type CategoryType = {
   id: number;
   name: string;
-  deskripsi: string; // Diubah
+  deskripsi: string;
   user_id: number;
   created_at: string;
   updated_at: string;
 };
 
-const fetchCategoryList = async ( // Diubah
+const fetchCategoryList = async (
   token: string | null,
   page = 1,
   limit = 10
 ) => {
-  return await axios.get<CategoryType[]>( // Diubah
-    `/api/category?page=${page}&limit=${limit}`, // Diubah
+  return await axios.get<CategoryType[]>(
+    `/api/category?page=${page}&limit=${limit}`,
     {
       headers: { Authorization: `Bearer ${token}` }
     }
   );
 };
 
-const Category = () => { // Diubah
+const Category = () => {
   const { getToken } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>( // Diubah
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
     null
   );
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
-  const { data: categoryData, refetch: refetchCategory } = useQuery({ // Diubah
-    queryKey: ["categoryList", currentPage], // Diubah
-    queryFn: () => fetchCategoryList(getToken(), currentPage) // Diubah
+  const { data: categoryData, refetch: refetchCategory } = useQuery({
+    queryKey: ["categoryList", currentPage],
+    queryFn: () => fetchCategoryList(getToken(), currentPage)
   });
 
   const handleAddNewClick = () => {
-    setSelectedCategory(null); // Diubah
+    setSelectedCategory(null);
     setIsEditMode(false);
     setIsFormOpen(true);
   };
 
-  const handleEditClick = (category: CategoryType) => { // Diubah
-    setSelectedCategory(category); // Diubah
+  const handleEditClick = (category: CategoryType) => {
+    setSelectedCategory(category);
     setIsEditMode(true);
     setIsFormOpen(true);
   };
 
-  const handleViewClick = (category: CategoryType) => { // Diubah
-    setSelectedCategory(category); // Diubah
+  const handleViewClick = (category: CategoryType) => {
+    setSelectedCategory(category);
     setIsFormOpen(false);
   };
 
@@ -65,17 +65,17 @@ const Category = () => { // Diubah
   };
 
   const handleCloseDetail = () => {
-    setSelectedCategory(null); // Diubah
+    setSelectedCategory(null);
   };
 
   const handleFormSubmit = () => {
-    refetchCategory(); // Diubah
+    refetchCategory();
     setIsFormOpen(false);
   };
 
   const handleDeleteSuccess = () => {
-    refetchCategory(); // Diubah
-    setSelectedCategory(null); // Diubah
+    refetchCategory();
+    setSelectedCategory(null);
   };
 
   const handlePageChange = (page: number) => {
@@ -83,66 +83,79 @@ const Category = () => { // Diubah
   };
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
-      <div className="w-64 bg-white dark:bg-gray-800 shadow-lg">
-        <div className="p-5 border-b border-gray-200 dark:border-gray-700">
-          <h1 className="text-2xl font-bold text-purple-800 dark:text-purple-400">
-            Category Library {/* Diubah */}
-          </h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Manage your collection
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-blue-800 to-purple-900 p-6">
+      <div className="max-w-7xl mx-auto rounded-3xl overflow-hidden bg-black/30 backdrop-blur-md border border-white/10 shadow-2xl">
+        <div className="flex flex-col md:flex-row">
+          {/* Sidebar - Now at the top for mobile, left for larger screens */}
+          <div className="md:w-72 lg:w-80 bg-black/40 backdrop-blur-xl p-6 md:border-r border-white/10">
+            <div className="flex items-center mb-8">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center shadow-lg">
+                <span className="text-white text-2xl">📂</span>
+              </div>
+              <div className="ml-4">
+                <h1 className="text-2xl font-bold text-white">Categories</h1>
+                <p className="text-indigo-200 text-sm opacity-80">Organize your collection</p>
+              </div>
+            </div>
+            
+            <button
+              onClick={handleAddNewClick}
+              className="w-full py-3 px-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-2xl text-white shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 font-medium transition-all duration-300 mb-8"
+            >
+              <PlusCircleOutlined /> New Category
+            </button>
 
-        <div className="p-5">
-          <button
-            onClick={handleAddNewClick}
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-lg"
-          >
-            <PlusOutlined /> Create New Category {/* Diubah */}
-          </button>
-        </div>
+            <div className="space-y-4 text-indigo-200">
+              <div className="p-4 rounded-xl bg-white/5 backdrop-blur">
+                <div className="text-sm">
+                  <div className="flex justify-between mb-2">
+                    <span>Total Categories</span>
+                    <span className="text-white font-medium">{categoryData?.data.length || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Current Page</span>
+                    <span className="text-white font-medium">{currentPage}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <div className="p-5 border-t border-gray-200 dark:border-gray-700">
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            <p>Total Categories: {categoryData?.data.length || 0}</p> {/* Diubah */}
-            <p className="mt-2">Current Page: {currentPage}</p>
+          {/* Main Content */}
+          <div className="flex-1 overflow-auto p-6">
+            {categoryData && (
+              <CategoryList
+                categories={categoryData.data}
+                onEdit={handleEditClick}
+                onView={handleViewClick}
+                onPageChange={handlePageChange}
+                currentPage={currentPage}
+              />
+            )}
           </div>
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-8">
-        {categoryData && ( // Diubah
-          <CategoryList // Diubah
-            categories={categoryData.data} // Diubah
-            onEdit={handleEditClick}
-            onView={handleViewClick}
-            onPageChange={handlePageChange}
-            currentPage={currentPage}
-          />
-        )}
+      {isFormOpen && (
+        <CategoryForm
+          isOpen={isFormOpen}
+          onClose={handleCloseForm}
+          onSubmit={handleFormSubmit}
+          category={isEditMode ? selectedCategory : null}
+          isEditMode={isEditMode}
+        />
+      )}
 
-        {isFormOpen && (
-          <CategoryForm // Diubah
-            isOpen={isFormOpen}
-            onClose={handleCloseForm}
-            onSubmit={handleFormSubmit}
-            category={isEditMode ? selectedCategory : null} // Diubah
-            isEditMode={isEditMode}
-          />
-        )}
-
-        {selectedCategory && !isFormOpen && ( // Diubah
-          <CategoryDetail // Diubah
-            category={selectedCategory} // Diubah
-            onClose={handleCloseDetail}
-            onEdit={() => handleEditClick(selectedCategory)} // Diubah
-            onDelete={handleDeleteSuccess}
-          />
-        )}
-      </div>
+      {selectedCategory && !isFormOpen && (
+        <CategoryDetail
+          category={selectedCategory}
+          onClose={handleCloseDetail}
+          onEdit={() => handleEditClick(selectedCategory)}
+          onDelete={handleDeleteSuccess}
+        />
+      )}
     </div>
   );
 };
 
-export default Category; // Diubah
+export default Category;
