@@ -1,39 +1,41 @@
-// FilmList.tsx
-import { FilmType } from "../pages/Films";
+// SongList.tsx // Diubah
+import { SongType } from "../pages/Songs"; // Diubah
 import { EyeOutlined, EditOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 
-interface FilmListProps {
-  films: FilmType[];
-  onEdit: (film: FilmType) => void;
-  onView: (film: FilmType) => void;
+interface SongListProps { // Diubah
+  songs: SongType[]; // Diubah
+  onEdit: (song: SongType) => void; // Diubah
+  onView: (song: SongType) => void; // Diubah
   onPageChange: (page: number) => void;
   currentPage: number;
 }
 
-const FilmList = ({ films, onEdit, onView, onPageChange, currentPage }: FilmListProps) => {
+// Diubah parameter props
+const SongList = ({ songs, onEdit, onView, onPageChange, currentPage }: SongListProps) => { // Diubah
   return (
     <div>
-      {films.length === 0 ? (
+      {songs.length === 0 ? ( // Diubah
         <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-xl shadow-md border border-dashed border-gray-300 dark:border-gray-700">
-          <div className="text-gray-400 dark:text-gray-500 text-7xl mb-3">🎬</div>
+          <div className="text-gray-400 dark:text-gray-500 text-7xl mb-3">🎵</div> {/* Icon bisa disesuaikan */}
           <p className="text-gray-500 dark:text-gray-400 text-lg mb-2">Your collection is empty</p>
-          <p className="text-gray-400 dark:text-gray-500 text-sm">Add a film to start your collection</p>
+          <p className="text-gray-400 dark:text-gray-500 text-sm">Add a song to start your collection</p> {/* Diubah */}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {films.map((film) => (
-            <FilmCard
-              key={film.id}
-              film={film}
-              onEdit={() => onEdit(film)}
-              onView={() => onView(film)}
+          {/* Diubah loop dan props */}
+          {songs.map((song) => ( // Diubah
+            <SongCard // Diubah
+              key={song.id} // Diubah
+              song={song} // Diubah
+              onEdit={() => onEdit(song)} // Diubah
+              onView={() => onView(song)} // Diubah
             />
           ))}
         </div>
       )}
-      
+
       {/* Pagination */}
-      {films.length > 0 && (
+      {songs.length > 0 && ( // Diubah
         <div className="flex justify-center mt-10">
           <div className="inline-flex bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow">
             <button
@@ -48,6 +50,7 @@ const FilmList = ({ films, onEdit, onView, onPageChange, currentPage }: FilmList
             </div>
             <button
               onClick={() => onPageChange(currentPage + 1)}
+              // Tambahkan logika disable jika ini halaman terakhir jika perlu
               className="px-4 py-3 text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-1"
             >
               Next <RightOutlined />
@@ -59,20 +62,21 @@ const FilmList = ({ films, onEdit, onView, onPageChange, currentPage }: FilmList
   );
 };
 
-interface FilmCardProps {
-  film: FilmType;
+interface SongCardProps { // Diubah
+  song: SongType; // Diubah
   onEdit: () => void;
   onView: () => void;
 }
 
-const FilmCard = ({ film, onEdit, onView }: FilmCardProps) => {
+// Diubah Nama Komponen & parameter props
+const SongCard = ({ song, onEdit, onView }: SongCardProps) => { // Diubah
   return (
     <div className="group bg-white dark:bg-slate-100 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col h-full">
       <div className="relative h-48 overflow-hidden">
-        {film.image_url ? (
+        {song.image_url ? ( // Diubah
           <img
-            src={film.image_url}
-            alt={film.title}
+            src={song.image_url} // Diubah
+            alt={song.title} // Diubah
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300x200?text=Image+Not+Found';
@@ -84,7 +88,7 @@ const FilmCard = ({ film, onEdit, onView }: FilmCardProps) => {
           </div>
         )}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        
+
         <div className="absolute bottom-0 left-0 w-full p-3 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 flex gap-2">
           <button
             onClick={onView}
@@ -103,12 +107,12 @@ const FilmCard = ({ film, onEdit, onView }: FilmCardProps) => {
       <div className="p-4 flex-1 flex flex-col">
         <div className="mb-1">
           <span className="inline-block px-2 py-0.5 text-xs font-semibold rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300">
-            {film.genre?.name || "Uncategorized"}
+            {song.category?.name || "Uncategorized"} {/* Diubah */}
           </span>
         </div>
-        <h3 className="font-bold text-gray-800 dark:text-white text-lg mb-1 line-clamp-1">{film.title}</h3>
-        <p className="text-gray-600 dark:text-gray-400 text-sm flex-1">Directed by {film.director}</p>
-        
+        <h3 className="font-bold text-gray-800 dark:text-white text-lg mb-1 line-clamp-1">{song.title}</h3> {/* Diubah */}
+        <p className="text-gray-600 dark:text-gray-400 text-sm flex-1">Artist: {song.artist}</p> {/* Diubah */}
+
         <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center">
           <button
             onClick={onView}
@@ -128,4 +132,4 @@ const FilmCard = ({ film, onEdit, onView }: FilmCardProps) => {
   );
 };
 
-export default FilmList;
+export default SongList; // Diubah

@@ -1,23 +1,23 @@
-// GenreDetail.tsx
+// CategoryDetail.tsx // Diubah
 import { useState } from "react";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "../utils/AxiosInstance";
-import { GenreType } from "./Genre";
+import { CategoryType } from "./Category"; // Diubah
 import { CloseOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-interface GenreDetailProps {
-  genre: GenreType;
+interface CategoryDetailProps { // Diubah
+  category: CategoryType; // Diubah
   onClose: () => void;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const GenreDetail = ({
-  genre,
+const CategoryDetail = ({ // Diubah
+  category, // Diubah
   onClose,
   onEdit,
   onDelete
-}: GenreDetailProps) => {
+}: CategoryDetailProps) => { // Diubah
   const { getToken } = useAuth();
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -28,12 +28,12 @@ const GenreDetail = ({
     setError("");
 
     try {
-      await axios.delete(`/api/genre/${genre.id}`, {
+      await axios.delete(`/api/category/${category.id}`, { // Diubah
         headers: { Authorization: `Bearer ${getToken()}` }
       });
       onDelete();
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to delete genre");
+      setError(err.response?.data?.message || "Failed to delete category"); // Diubah
       setIsDeleting(false);
       setShowDeleteConfirm(false);
     }
@@ -53,7 +53,7 @@ const GenreDetail = ({
         <div className="bg-gradient-to-r from-purple-600 to-blue-500 p-6 text-white">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-bold">
-              Genre Details
+              Category Details {/* Diubah */}
             </h2>
             <button
               onClick={onClose}
@@ -62,7 +62,7 @@ const GenreDetail = ({
               <CloseOutlined />
             </button>
           </div>
-          <h3 className="text-2xl font-bold mt-4 mb-1">{genre.name}</h3>
+          <h3 className="text-2xl font-bold mt-4 mb-1">{category.name}</h3> {/* Diubah */}
         </div>
 
         {error && (
@@ -73,9 +73,9 @@ const GenreDetail = ({
 
         <div className="p-6">
           <div className="mb-6">
-            <h4 className="text-sm uppercase text-gray-500 dark:text-gray-400 font-medium mb-2">Description</h4>
+            <h4 className="text-sm uppercase text-gray-500 dark:text-gray-400 font-medium mb-2">Deskripsi</h4> {/* Diubah */}
             <div className="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-lg border border-gray-100 dark:border-gray-700">
-              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{genre.description}</p>
+              <p className="text-gray-700 dark:text-gray-300 whitespace-pre-line">{category.deskripsi}</p> {/* Diubah */}
             </div>
           </div>
 
@@ -83,13 +83,13 @@ const GenreDetail = ({
             <div>
               <h4 className="text-sm uppercase text-gray-500 dark:text-gray-400 font-medium mb-2">Created</h4>
               <div className="bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
-                <p className="text-gray-700 dark:text-gray-300">{formatDate(genre.created_at)}</p>
+                <p className="text-gray-700 dark:text-gray-300">{formatDate(category.created_at)}</p> {/* Diubah */}
               </div>
             </div>
             <div>
               <h4 className="text-sm uppercase text-gray-500 dark:text-gray-400 font-medium mb-2">Last Updated</h4>
               <div className="bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg border border-gray-100 dark:border-gray-700">
-                <p className="text-gray-700 dark:text-gray-300">{formatDate(genre.updated_at)}</p>
+                <p className="text-gray-700 dark:text-gray-300">{formatDate(category.updated_at)}</p> {/* Diubah */}
               </div>
             </div>
           </div>
@@ -110,14 +110,13 @@ const GenreDetail = ({
           </div>
         </div>
 
-
         {showDeleteConfirm && (
           <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
             <h3 className="text-lg font-medium text-red-600 dark:text-red-400 mb-2">
               Confirm Deletion
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
-              Are you sure you want to delete <span className="font-semibold">"{genre.name}"</span>? This action cannot be undone.
+              Are you sure you want to delete <span className="font-semibold">"{category.name}"</span>? This action cannot be undone. {/* Diubah */}
             </p>
             <div className="flex justify-end space-x-3">
               <button
@@ -142,4 +141,4 @@ const GenreDetail = ({
   );
 };
 
-export default GenreDetail;
+export default CategoryDetail; // Diubah

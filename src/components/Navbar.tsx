@@ -7,9 +7,9 @@ import { LogoutOutlined, BellOutlined, MenuOutlined, CloseOutlined } from "@ant-
 import { Clapperboard } from "lucide-react"; // Ganti dengan ikon Lucide
 
 const navigation = [
-  { name: "Film", to: "/film", current: false },
-  { name: "Genre", to: "/genre", current: false },
-  { name: "Comment", to: "/comment", current: false }
+  { name: "Songs", to: "/songs", current: false },
+  { name: "Category", to: "/category", current: false },
+  { name: "Ulasan", to: "/ulasan", current: false }
 ];
 
 function classNames(...classes: string[]) {

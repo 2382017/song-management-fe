@@ -1,54 +1,54 @@
-// GenreForm.tsx
+// CategoryForm.tsx // Diubah
 import { useState, useEffect } from "react";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "../utils/AxiosInstance";
-import { GenreType } from "../pages/Genre";
+import { CategoryType } from "../pages/Category"; // Diubah
 import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 
-interface GenreFormProps {
+interface CategoryFormProps { // Diubah
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
-  genre: GenreType | null;
+  category: CategoryType | null; // Diubah
   isEditMode: boolean;
 }
 
 interface FormData {
   name: string;
-  description: string;
+  deskripsi: string; // Diubah
 }
 
-const GenreForm = ({
+const CategoryForm = ({ // Diubah
   isOpen,
   onClose,
   onSubmit,
-  genre,
+  category, // Diubah
   isEditMode
-}: GenreFormProps) => {
+}: CategoryFormProps) => { // Diubah
   const { getToken } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
-    description: ""
+    deskripsi: "" // Diubah
   });
 
   useEffect(() => {
-    // If editing an existing genre, populate the form
-    if (isEditMode && genre) {
+    // If editing an existing category, populate the form // Diubah
+    if (isEditMode && category) { // Diubah
       setFormData({
-        name: genre.name,
-        description: genre.description
+        name: category.name, // Diubah
+        deskripsi: category.deskripsi // Diubah
       });
     } else {
-      // Reset form for new genre
+      // Reset form for new category // Diubah
       setFormData({
         name: "",
-        description: ""
+        deskripsi: "" // Diubah
       });
     }
-  }, [isEditMode, genre]);
+  }, [isEditMode, category]); // Diubah
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -66,14 +66,14 @@ const GenreForm = ({
     setError("");
 
     try {
-      if (isEditMode && genre) {
-        // Update existing genre
-        await axios.put(`/api/genre/${genre.id}`, formData, {
+      if (isEditMode && category) { // Diubah
+        // Update existing category // Diubah
+        await axios.put(`/api/category/${category.id}`, formData, { // Diubah
           headers: { Authorization: `Bearer ${getToken()}` }
         });
       } else {
-        // Create new genre
-        await axios.post("/api/genre", formData, {
+        // Create new category // Diubah
+        await axios.post("/api/category", formData, { // Diubah
           headers: { Authorization: `Bearer ${getToken()}` }
         });
       }
@@ -81,7 +81,7 @@ const GenreForm = ({
     } catch (err: any) {
       setError(
         err.response?.data?.message ||
-          "An error occurred while saving the genre"
+          "An error occurred while saving the category" // Diubah
       );
     } finally {
       setIsSubmitting(false);
@@ -93,7 +93,7 @@ const GenreForm = ({
   return (
     <div className="fixed inset-0 bg-slate-100 bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden w-full max-w-md animate-slideIn">
-        {/* Header with different style */}
+        {/* Header */}
         <div className="relative">
           <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-r from-purple-600 to-blue-500 rounded-t-2xl"></div>
           <div className="relative pt-16 px-6 pb-4 text-center">
@@ -101,10 +101,10 @@ const GenreForm = ({
               <span className="text-2xl">{isEditMode ? "✏️" : "✨"}</span>
             </div>
             <h2 className="text-xl font-bold text-gray-800 dark:text-white">
-              {isEditMode ? "Edit Genre" : "Create New Genre"}
+              {isEditMode ? "Edit Category" : "Create New Category"} {/* Diubah */}
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-              {isEditMode ? "Update the genre details below" : "Fill in the details to create a new genre"}
+              {isEditMode ? "Update the category details below" : "Fill in the details to create a new category"} {/* Diubah */}
             </p>
           </div>
           <button
@@ -127,7 +127,7 @@ const GenreForm = ({
               htmlFor="name"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
-              Genre Name
+              Category Name {/* Diubah */}
             </label>
             <input
               type="text"
@@ -137,26 +137,26 @@ const GenreForm = ({
               value={formData.name}
               onChange={handleChange}
               className="w-full px-4 py-3 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white transition-shadow"
-              placeholder="Enter genre name..."
+              placeholder="Enter category name..." /* Diubah */
             />
           </div>
 
           <div className="mb-6">
             <label
-              htmlFor="description"
+              htmlFor="deskripsi" // Diubah
               className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
-              Description
+              Deskripsi {/* Diubah */}
             </label>
             <textarea
-              id="description"
-              name="description"
+              id="deskripsi" // Diubah
+              name="deskripsi" // Diubah
               required
-              value={formData.description}
+              value={formData.deskripsi} // Diubah
               onChange={handleChange}
               rows={5}
               className="w-full px-4 py-3 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white transition-shadow"
-              placeholder="Provide a detailed description of this genre..."
+              placeholder="Provide a detailed deskripsi for this category..." /* Diubah */
             ></textarea>
           </div>
 
@@ -174,7 +174,7 @@ const GenreForm = ({
               className="px-4 py-3 text-sm bg-gradient-to-r from-purple-600 to-blue-500 hover:from-purple-700 hover:to-blue-600 text-white rounded-lg disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
             >
               <SaveOutlined />{" "}
-              {isSubmitting ? "Saving..." : isEditMode ? "Update Genre" : "Create Genre"}
+              {isSubmitting ? "Saving..." : isEditMode ? "Update Category" : "Create Category"} {/* Diubah */}
             </button>
           </div>
         </form>
@@ -183,4 +183,4 @@ const GenreForm = ({
   );
 };
 
-export default GenreForm;
+export default CategoryForm; // Diubah

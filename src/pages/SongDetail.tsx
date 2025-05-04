@@ -1,18 +1,18 @@
-// FilmDetail.tsx
+// SongDetail.tsx // Diubah
 import { useState } from "react";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "../utils/AxiosInstance";
-import { FilmType } from "./Films";
+import { SongType } from "./Songs"; // Diubah
 import { CloseOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-interface FilmDetailProps {
-  film: FilmType;
+interface SongDetailProps { // Diubah
+  song: SongType; // Diubah
   onClose: () => void;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const FilmDetail = ({ film, onClose, onEdit, onDelete }: FilmDetailProps) => {
+const SongDetail = ({ song, onClose, onEdit, onDelete }: SongDetailProps) => { // Diubah parameter & props
   const { getToken } = useAuth();
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -23,12 +23,13 @@ const FilmDetail = ({ film, onClose, onEdit, onDelete }: FilmDetailProps) => {
     setError("");
 
     try {
-      await axios.delete(`/api/films/${film.id}`, {
+      // Diubah endpoint
+      await axios.delete(`/api/songs/${song.id}`, { // Diubah
         headers: { Authorization: `Bearer ${getToken()}` }
       });
       onDelete();
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to delete film");
+      setError(err.response?.data?.message || "Failed to delete song"); // Diubah
       setIsDeleting(false);
       setShowDeleteConfirm(false);
     }
@@ -52,13 +53,13 @@ const FilmDetail = ({ film, onClose, onEdit, onDelete }: FilmDetailProps) => {
           >
             <CloseOutlined />
           </button>
-        
+
           <div className="flex flex-col md:flex-row">
             <div className="md:w-2/5 h-80 md:h-auto">
-              {film.image_url ? (
+              {song.image_url ? ( // Diubah
                 <img
-                  src={film.image_url}
-                  alt={film.title}
+                  src={song.image_url} // Diubah
+                  alt={song.title} // Diubah
                   className="w-full h-full object-cover"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src =
@@ -75,26 +76,26 @@ const FilmDetail = ({ film, onClose, onEdit, onDelete }: FilmDetailProps) => {
             <div className="md:w-3/5 p-6 md:p-8">
               <div className="mb-5">
                 <div className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 rounded-full text-xs font-bold text-blue-800 dark:text-blue-200 mb-3">
-                  {film.genre?.name || "Uncategorized"}
+                  {song.category?.name || "Uncategorized"} {/* Diubah */}
                 </div>
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                  {film.title}
+                  {song.title} {/* Diubah */}
                 </h1>
                 <p className="text-gray-600 dark:text-gray-400 font-medium">
-                  Directed by {film.director}
+                  Artist: {song.artist} {/* Diubah */}
                 </p>
               </div>
 
               <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400 border-t border-b border-gray-200 dark:border-gray-700 py-4 mb-6">
                 <div className="flex">
                   <span className="w-28 font-medium">Added on:</span>
-                  <span>{formatDate(film.created_at)}</span>
+                  <span>{formatDate(song.created_at)}</span> {/* Diubah */}
                 </div>
 
-                {film.updated_at !== film.created_at && (
+                {song.updated_at !== song.created_at && ( // Diubah
                   <div className="flex">
                     <span className="w-28 font-medium">Last updated:</span>
-                    <span>{formatDate(film.updated_at)}</span>
+                    <span>{formatDate(song.updated_at)}</span> {/* Diubah */}
                   </div>
                 )}
               </div>
@@ -110,7 +111,7 @@ const FilmDetail = ({ film, onClose, onEdit, onDelete }: FilmDetailProps) => {
                   onClick={onEdit}
                   className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center gap-2"
                 >
-                  <EditOutlined /> Edit Film
+                  <EditOutlined /> Edit Song {/* Diubah */}
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
@@ -130,7 +131,7 @@ const FilmDetail = ({ film, onClose, onEdit, onDelete }: FilmDetailProps) => {
                   Confirm Deletion
                 </h3>
                 <p className="text-gray-600 dark:text-gray-300 mb-6">
-                  Are you sure you want to delete "{film.title}"? This action cannot be undone.
+                  Are you sure you want to delete "{song.title}"? This action cannot be undone. {/* Diubah */}
                 </p>
                 <div className="flex justify-end space-x-3">
                   <button
@@ -157,4 +158,4 @@ const FilmDetail = ({ film, onClose, onEdit, onDelete }: FilmDetailProps) => {
   );
 };
 
-export default FilmDetail;
+export default SongDetail; // Diubah

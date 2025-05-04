@@ -1,61 +1,64 @@
-
 import { useState, useEffect } from "react";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "../utils/AxiosInstance";
-import { FilmType, GenreType } from "../pages/Films";
+import { SongType, CategoryType } from "../pages/Songs"; // Diubah
 import { CloseOutlined, SaveOutlined } from "@ant-design/icons";
 
-interface FilmFormProps {
+interface SongFormProps { // Diubah
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
-  film: FilmType | null;
+  song: SongType | null; // Diubah
   isEditMode: boolean;
-  genres: GenreType[];
+  categories: CategoryType[]; // Diubah
 }
 
 interface FormData {
   title: string;
-  director: string;
-  genreId: number;
+  artist: string; // Diubah
+  categoryId: number; // Diubah
   imageUrl: string;
 }
 
-const FilmForm = ({ 
-  isOpen, 
-  onClose, 
-  onSubmit, 
-  film, 
+const SongForm = ({ // Diubah
+  isOpen,
+  onClose,
+  onSubmit,
+  song, // Diubah
   isEditMode,
-  genres 
-}: FilmFormProps) => {
+  categories // Diubah
+}: SongFormProps) => { // Diubah
   const { getToken } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
-  
+
+  // Diubah properti formData
   const [formData, setFormData] = useState<FormData>({
     title: "",
-    director: "",
-    genreId: genres.length > 0 ? genres[0].id : 0,
+    artist: "", // Diubah
+    categoryId: categories.length > 0 ? categories[0].id : 0, // Diubah
     imageUrl: ""
   });
 
   useEffect(() => {
-    if (isEditMode && film) {
+    if (isEditMode && song) { // Diubah
+      // Diubah properti formData & sumber data
       setFormData({
-        title: film.title,
-        director: film.director,
-        genreId: film.genre_id || (genres.length > 0 ? genres[0].id : 0),
-        imageUrl: film.image_url
+        title: song.title, // Diubah
+        artist: song.artist, // Diubah
+        categoryId: song.category_id || (categories.length > 0 ? categories[0].id : 0), // Diubah
+        imageUrl: song.image_url // Diubah
       });
     }
-  }, [isEditMode, film, genres]);
+    // Diubah dependensi
+  }, [isEditMode, song, categories]); // Diubah
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === "genreId" ? parseInt(value, 10) : value
+      // Diubah pengecekan nama field
+      [name]: name === "categoryId" ? parseInt(value, 10) : value // Diubah
     });
   };
 
@@ -65,20 +68,20 @@ const FilmForm = ({
     setError("");
 
     try {
-      if (isEditMode && film) {
-        // Update existing film
-        await axios.put(`/api/films/${film.id}`, formData, {
+      if (isEditMode && song) { // Diubah
+        // Update existing song - Diubah endpoint
+        await axios.put(`/api/songs/${song.id}`, formData, { // Diubah
           headers: { Authorization: `Bearer ${getToken()}` }
         });
       } else {
-        // Create new film
-        await axios.post("/api/films", formData, {
+        // Create new song - Diubah endpoint
+        await axios.post("/api/songs", formData, { // Diubah
           headers: { Authorization: `Bearer ${getToken()}` }
         });
       }
       onSubmit();
     } catch (err: any) {
-      setError(err.response?.data?.message || "An error occurred while saving the film");
+      setError(err.response?.data?.message || "An error occurred while saving the song"); // Diubah
     } finally {
       setIsSubmitting(false);
     }
@@ -92,7 +95,7 @@ const FilmForm = ({
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">
-              {isEditMode ? "Edit Film" : "Add New Film"}
+              {isEditMode ? "Edit Song" : "Add New Song"} {/* Diubah */}
             </h2>
             <button
               onClick={onClose}
@@ -102,7 +105,7 @@ const FilmForm = ({
             </button>
           </div>
           <p className="text-blue-100 mt-1">
-            {isEditMode ? "Update your film details" : "Add a new film to your collection"}
+            {isEditMode ? "Update your song details" : "Add a new song to your collection"} {/* Diubah */}
           </p>
         </div>
 
@@ -116,7 +119,7 @@ const FilmForm = ({
           <div className="space-y-5">
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Film Title
+                Song Title {/* Diubah */}
               </label>
               <input
                 type="text"
@@ -126,44 +129,45 @@ const FilmForm = ({
                 value={formData.title}
                 onChange={handleChange}
                 className="w-full px-4 py-3 text-gray-800 dark:text-white bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter the title of the film"
+                placeholder="Enter the title of the song" // Diubah
               />
             </div>
 
             <div>
-              <label htmlFor="director" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Director
+              <label htmlFor="artist" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> {/* Diubah htmlFor */}
+                Artist {/* Diubah */}
               </label>
               <input
                 type="text"
-                id="director"
-                name="director"
+                id="artist" // Diubah id
+                name="artist" // Diubah name
                 required
-                value={formData.director}
+                value={formData.artist} // Diubah value
                 onChange={handleChange}
                 className="w-full px-4 py-3 text-gray-800 dark:text-white bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter the director's name"
+                placeholder="Enter the artist's name" // Diubah
               />
             </div>
 
             <div>
-              <label htmlFor="genreId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Genre
+              <label htmlFor="categoryId" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"> {/* Diubah htmlFor */}
+                Category {/* Diubah */}
               </label>
               <select
-                id="genreId"
-                name="genreId"
+                id="categoryId" // Diubah id
+                name="categoryId" // Diubah name
                 required
-                value={formData.genreId}
+                value={formData.categoryId} // Diubah value
                 onChange={handleChange}
                 className="w-full px-4 py-3 text-gray-800 dark:text-white bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                {genres.length === 0 && (
-                  <option value="">No genres available</option>
+                {categories.length === 0 && ( // Diubah
+                  <option value="">No categories available</option> // Diubah
                 )}
-                {genres.map((genre) => (
-                  <option key={genre.id} value={genre.id}>
-                    {genre.name}
+                {/* Diubah loop dan properti */}
+                {categories.map((category) => ( // Diubah
+                  <option key={category.id} value={category.id}> {/* Diubah */}
+                    {category.name} {/* Diubah */}
                   </option>
                 ))}
               </select>
@@ -171,7 +175,7 @@ const FilmForm = ({
 
             <div>
               <label htmlFor="imageUrl" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Image URL
+                Image URL {/* Bisa juga diubah jadi Cover Art URL jika diinginkan */}
               </label>
               <input
                 type="text"
@@ -188,13 +192,13 @@ const FilmForm = ({
               <div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Image Preview:</p>
                 <div className="rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-                  <img 
-                    src={formData.imageUrl} 
-                    alt="Preview" 
+                  <img
+                    src={formData.imageUrl}
+                    alt="Preview"
                     className="w-full h-44 object-cover"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300x200?text=Invalid+Image';
-                    }} 
+                    }}
                   />
                 </div>
               </div>
@@ -214,7 +218,7 @@ const FilmForm = ({
               disabled={isSubmitting}
               className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors font-medium flex items-center justify-center gap-2"
             >
-              <SaveOutlined /> {isSubmitting ? "Saving..." : isEditMode ? "Update Film" : "Save Film"}
+              <SaveOutlined /> {isSubmitting ? "Saving..." : isEditMode ? "Update Song" : "Save Song"} {/* Diubah */}
             </button>
           </div>
         </form>
@@ -223,4 +227,4 @@ const FilmForm = ({
   );
 };
 
-export default FilmForm;
+export default SongForm; // Diubah
