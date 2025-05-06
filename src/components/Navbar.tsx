@@ -10,7 +10,7 @@ import {
 import { Clapperboard } from "lucide-react"; // Ganti dengan ikon Lucide
 
 const navigation = [
-  { name: "Songs", to: "/songs", current: false },
+  { name: "Songs", to: "/", current: false },
   { name: "Genre", to: "/genre", current: false },
   { name: "Comment", to: "/comment", current: false }
 ];

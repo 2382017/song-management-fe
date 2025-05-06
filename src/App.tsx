@@ -45,14 +45,6 @@ function App() {
             index
             element={
               <PrivateRoute>
-                <Home />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="songs"
-            element={
-              <PrivateRoute>
                 <Songs />
               </PrivateRoute>
             }
