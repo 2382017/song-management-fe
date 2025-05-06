@@ -10,7 +10,7 @@ import RootLayout from "./layouts/RootLayout";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Genre from "./pages/Category";
-import Films from "./pages/Songs";
+import Songs from "./pages/Songs";
 import Comment from "./pages/Ulasan";
 import Register from "./pages/Register";
 import PrivateRoute from "./utils/PrivateRoute";
@@ -50,10 +50,10 @@ function App() {
             }
           />
           <Route
-            path="film"
+            path="songs"
             element={
               <PrivateRoute>
-                <Films />
+                <Songs />
               </PrivateRoute>
             }
           />

@@ -1,15 +1,18 @@
-import {
-  Disclosure
-} from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../utils/AuthProvider";
-import { LogoutOutlined, BellOutlined, MenuOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  LogoutOutlined,
+  BellOutlined,
+  MenuOutlined,
+  CloseOutlined
+} from "@ant-design/icons";
 import { Clapperboard } from "lucide-react"; // Ganti dengan ikon Lucide
 
 const navigation = [
   { name: "Songs", to: "/songs", current: false },
-  { name: "Category", to: "/category", current: false },
-  { name: "Ulasan", to: "/ulasan", current: false }
+  { name: "Genre", to: "/genre", current: false },
+  { name: "Comment", to: "/comment", current: false }
 ];
 
 function classNames(...classes: string[]) {
@@ -19,7 +22,10 @@ function classNames(...classes: string[]) {
 const Navbar = () => {
   const { logout } = useAuth();
   return (
-    <Disclosure as="nav" className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-xl">
+    <Disclosure
+      as="nav"
+      className="bg-gradient-to-r from-gray-900 to-gray-800 shadow-xl"
+    >
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -28,7 +34,9 @@ const Navbar = () => {
               <div className="flex items-center">
                 <div className="flex items-center space-x-2">
                   <Clapperboard className="text-4xl text-red-500" />
-                  <span className="text-white font-bold text-xl hidden md:block">BenMovie</span>
+                  <span className="text-white font-bold text-xl hidden md:block">
+                    BenMovie
+                  </span>
                 </div>
               </div>
 
@@ -39,7 +47,7 @@ const Navbar = () => {
                     <NavLink
                       to={item.to}
                       key={item.name}
-                      className={({ isActive }) => 
+                      className={({ isActive }) =>
                         classNames(
                           isActive
                             ? "text-yellow-300 border-b-2 border-yellow-300"
@@ -53,7 +61,7 @@ const Navbar = () => {
                   ))}
                 </div>
               </div>
-              
+
               {/* Controls on the right */}
               <div className="flex items-center space-x-6">
                 <button
@@ -94,12 +102,12 @@ const Navbar = () => {
                 <NavLink
                   to={item.to}
                   key={item.name}
-                  className={({ isActive }) => 
+                  className={({ isActive }) =>
                     classNames(
-                      isActive 
-                        ? 'text-yellow-300 bg-gray-700' 
-                        : 'text-gray-300 hover:bg-gray-700 hover:text-yellow-300',
-                      'px-3 py-3 rounded-md text-base font-medium border-b border-gray-700 flex items-center'
+                      isActive
+                        ? "text-yellow-300 bg-gray-700"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-yellow-300",
+                      "px-3 py-3 rounded-md text-base font-medium border-b border-gray-700 flex items-center"
                     )
                   }
                 >
