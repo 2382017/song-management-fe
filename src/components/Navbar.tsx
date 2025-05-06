@@ -33,9 +33,8 @@ const Navbar = () => {
               {/* Logo and brand on the left */}
               <div className="flex items-center">
                 <div className="flex items-center space-x-2">
-                  <Clapperboard className="text-4xl text-red-500" />
                   <span className="text-white font-bold text-xl hidden md:block">
-                    BenMovie
+                    WeliMusic
                   </span>
                 </div>
               </div>
