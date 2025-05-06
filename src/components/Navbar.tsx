@@ -7,7 +7,7 @@ import {
   MenuOutlined,
   CloseOutlined
 } from "@ant-design/icons";
-import { Clapperboard } from "lucide-react"; // Ganti dengan ikon Lucide
+
 
 const navigation = [
   { name: "Songs", to: "/", current: false },
