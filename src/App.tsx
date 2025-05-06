@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import BaseLayout from "./layouts/BaseLayout";
 import RootLayout from "./layouts/RootLayout";
-import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Genre from "./pages/Category";
 import Songs from "./pages/Songs";
